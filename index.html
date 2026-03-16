@@ -3,97 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Boost SMM</title>
+    <title>Viral Boost SMM - Best Quality</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; padding: 15px; margin: 0; }
-        .card { background: #1e293b; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 400px; border: 1px solid #334155; box-sizing: border-box; }
-        h2 { text-align: center; color: #38bdf8; margin: 0 0 20px 0; }
+        .card { background: #1e293b; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 450px; border: 1px solid #334155; box-sizing: border-box; }
+        h2 { text-align: center; color: #38bdf8; margin: 0 0 20px 0; font-size: 24px; }
         label { display: block; margin: 15px 0 5px; font-weight: bold; font-size: 14px; color: #94a3b8; }
-        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; font-size: 16px; }
-        .price-box { background: #0ea5e9; color: white; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; font-size: 18px; }
-        .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; font-size: 16px; margin-bottom: 10px; }
+        .price-box { background: #0ea5e9; color: white; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; font-size: 20px; border: 2px solid #38bdf8; }
+        .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
         #qr-section { display: none; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #334155; }
         .qr-img { width: 240px; border-radius: 10px; margin: 10px 0; border: 4px solid white; background: white; }
-        #success-msg { display: none; background: #065f46; color: #34d399; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center; font-weight: bold; border: 1px solid #059669; }
+        #success-msg { display: none; background: #065f46; color: #34d399; padding: 20px; border-radius: 8px; margin-top: 20px; text-align: center; font-weight: bold; border: 1px solid #059669; }
+        .badge { background: #334155; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 5px; }
     </style>
 </head>
 <body>
 
-<div class="card" style="margin-top: 20px;">
-    <h2>🚀 Viral Boost Views</h2>
-    <label>Instagram Video Link:</label>
-    <input type="text" id="videoLink" placeholder="Yahan link paste karein...">
+<div class="card" style="margin-top: 10px;">
+    <h2>🚀 Viral Boost SMM</h2>
+    
+    <label><i class="fas fa-link"></i> Instagram Profile/Video Link:</label>
+    <input type="text" id="targetLink" placeholder="Yahan link paste karein...">
 
-    <label>Views Chunein:</label>
-    <select id="quantity" onchange="updatePrice()">
-        <option value="0">-- Select Karein --</option>
-        <option value="5">20,000 Views - ₹5</option>
-        <option value="12">50,000 Views - ₹12</option>
-        <option value="22">100,000 Views - ₹22</option>
+    <label><i class="fas fa-concierge-bell"></i> Service Chunein:</label>
+    <select id="serviceType" onchange="updateOptions()">
+        <option value="">-- Service Select Karein --</option>
+        <option value="views">Instagram Views (Fast)</option>
+        <option value="likes">Instagram Likes (High Quality)</option>
+        <option value="followers">Instagram Followers (Non-Drop)</option>
     </select>
 
-    <div class="price-box" id="priceDisplay">Total: ₹0</div>
-    <button class="btn-pay" id="mainPayBtn" onclick="openPayment()">Payment Karein</button>
+    <label><i class="fas fa-chart-line"></i> Quantity Chunein:</label>
+    <select id="quantity" onchange="calculatePrice()">
+        <option value="0">Pehle Service Chunein</option>
+    </select>
+
+    <div class="price-box" id="priceDisplay">Amount: ₹0</div>
+    
+    <button class="btn-pay" id="mainPayBtn" onclick="openPayment()">Abhi Order Karein</button>
 
     <div id="qr-section">
-        <p style="color: #fbbf24; font-weight: bold;">Scan Karein: ₹<span id="amountText">0</span></p>
+        <p style="color: #fbbf24; font-weight: bold;">Scan to Pay: ₹<span id="amountText">0</span></p>
         <img src="" id="qrImage" alt="Payment QR" class="qr-img">
-        <p style="font-size: 12px; color: #94a3b8;">UPI ID: 7388720012@fam</p>
+        <p style="font-size: 14px;">UPI ID: <b style="color:#38bdf8">7388720012@fam</b></p>
         
-        <input type="text" id="utr" placeholder="12 Digit UTR Number" style="border: 2px solid #f59e0b !important; margin-top: 10px;">
-        <button class="btn-pay" style="background: #2563eb;" id="finalBtn" onclick="processOrder()">Confirm Order</button>
+        <label>Enter 12 Digit UTR / Transaction ID:</label>
+        <input type="text" id="utr" placeholder="Example: 4123XXXXXXXX" maxlength="12">
+        <button class="btn-pay" style="background: #2563eb;" id="finalBtn" onclick="processOrder()">Confirm Payment</button>
     </div>
 
     <div id="success-msg">
-        ✅ Your order confirmed! Please wait 1 hour.
+        <i class="fas fa-check-circle" style="font-size: 40px; display: block; margin-bottom: 10px;"></i>
+        ✅ Your order confirmed!<br>Please wait 1 hour for processing.
     </div>
 </div>
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw8v6Ery9elqBXZYTsq79dLu4EKzs-9027c6QIKbCutB92MiI6eISjQ-bB44FJ3TXQ/exec'; 
 
-    function updatePrice() {
+    const optionsData = {
+        views: [
+            {q: "1,000 Views", p: 1},
+            {q: "10,000 Views", p: 8},
+            {q: "50,000 Views", p: 35},
+            {q: "100,000 Views", p: 60},
+            {q: "1,000,000 Views", p: 200}
+        ],
+        likes: [
+            {q: "1,000 Likes", p: 10},
+            {q: "2,000 Likes", p: 20},
+            {q: "5,000 Likes", p: 45},
+            {q: "10,000 Likes", p: 85},
+            {q: "50,000 Likes", p: 400},
+            {q: "100,000 Likes", p: 750}
+        ],
+        followers: [
+            {q: "500 Followers", p: 25},
+            {q: "1,000 Followers", p: 45},
+            {q: "2,000 Followers", p: 85},
+            {q: "5,000 Followers", p: 200},
+            {q: "10,000 Followers", p: 380}
+        ]
+    };
+
+    function updateOptions() {
+        const type = document.getElementById("serviceType").value;
+        const qSelect = document.getElementById("quantity");
+        qSelect.innerHTML = '<option value="0">-- Quantity Chunein --</option>';
+        
+        if(type && optionsData[type]) {
+            optionsData[type].forEach(item => {
+                let opt = document.createElement("option");
+                opt.value = item.p;
+                opt.text = `${item.q} - ₹${item.p}`;
+                qSelect.add(opt);
+            });
+        }
+        calculatePrice();
+    }
+
+    function calculatePrice() {
         let p = document.getElementById("quantity").value;
-        document.getElementById("priceDisplay").innerText = "Total: ₹" + p;
+        document.getElementById("priceDisplay").innerText = "Amount: ₹" + p;
         document.getElementById("amountText").innerText = p;
         document.getElementById("qrImage").src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=7388720012@fam%26am=${p}%26cu=INR`;
     }
 
     function openPayment() {
-        if(document.getElementById("videoLink").value == "" || document.getElementById("quantity").value == "0") {
-            alert("Bhai Link aur Views toh select karo!"); return;
+        const link = document.getElementById("targetLink").value;
+        const qty = document.getElementById("quantity").value;
+        if(link.length < 5 || qty == "0") {
+            alert("Bhai Link aur Service sahi se chuno!"); return;
         }
         document.getElementById("qr-section").style.display = "block";
         document.getElementById("mainPayBtn").style.display = "none";
     }
 
     async function processOrder() {
-        let link = document.getElementById("videoLink").value;
-        let qtyText = document.getElementById("quantity").options[document.getElementById("quantity").selectedIndex].text;
-        let utr = document.getElementById("utr").value;
-        let price = document.getElementById("quantity").value;
+        const link = document.getElementById("targetLink").value;
+        const service = document.getElementById("serviceType").value;
+        const qtyText = document.getElementById("quantity").options[document.getElementById("quantity").selectedIndex].text;
+        const utr = document.getElementById("utr").value;
+        const price = document.getElementById("quantity").value;
 
-        if(utr.length < 10) { alert("Sahi UTR number daalein!"); return; }
+        if(utr.length < 10) { alert("Sahi UTR Number dalein!"); return; }
         
-        document.getElementById("finalBtn").innerText = "Processing...";
+        document.getElementById("finalBtn").innerText = "Verifying Payment...";
         document.getElementById("finalBtn").disabled = true;
 
         try {
-            // Data Sheet mein bhejna
             await fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: JSON.stringify({ link: link, views: qtyText, amount: price, utr: utr })
+                body: JSON.stringify({ link: link, views: `${service}: ${qtyText}`, amount: price, utr: utr })
             });
 
-            // Payment section chhupana aur success message dikhana
             document.getElementById("qr-section").style.display = "none";
             document.getElementById("success-msg").style.display = "block";
             
         } catch (e) { 
-            alert("Kuch error aaya, dobara koshish karein.");
-            document.getElementById("finalBtn").innerText = "Confirm Order";
+            alert("Internet slow hai, dobara try karein.");
             document.getElementById("finalBtn").disabled = false;
         }
     }
