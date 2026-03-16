@@ -15,6 +15,7 @@
         .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
         #qr-section { display: none; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #334155; }
         .qr-img { width: 240px; border-radius: 10px; margin: 10px 0; border: 4px solid white; background: white; }
+        #success-msg { display: none; background: #065f46; color: #34d399; padding: 15px; border-radius: 8px; margin-top: 20px; text-align: center; font-weight: bold; border: 1px solid #059669; }
     </style>
 </head>
 <body>
@@ -33,7 +34,7 @@
     </select>
 
     <div class="price-box" id="priceDisplay">Total: ₹0</div>
-    <button class="btn-pay" onclick="openPayment()">Payment Karein</button>
+    <button class="btn-pay" id="mainPayBtn" onclick="openPayment()">Payment Karein</button>
 
     <div id="qr-section">
         <p style="color: #fbbf24; font-weight: bold;">Scan Karein: ₹<span id="amountText">0</span></p>
@@ -43,10 +44,13 @@
         <input type="text" id="utr" placeholder="12 Digit UTR Number" style="border: 2px solid #f59e0b !important; margin-top: 10px;">
         <button class="btn-pay" style="background: #2563eb;" id="finalBtn" onclick="processOrder()">Confirm Order</button>
     </div>
+
+    <div id="success-msg">
+        ✅ Your order confirmed! Please wait 1 hour.
+    </div>
 </div>
 
 <script>
-    // Aapka Web App URL
     const scriptURL = 'https://script.google.com/macros/s/AKfycbw8v6Ery9elqBXZYTsq79dLu4EKzs-9027c6QIKbCutB92MiI6eISjQ-bB44FJ3TXQ/exec'; 
 
     function updatePrice() {
@@ -61,6 +65,7 @@
             alert("Bhai Link aur Views toh select karo!"); return;
         }
         document.getElementById("qr-section").style.display = "block";
+        document.getElementById("mainPayBtn").style.display = "none";
     }
 
     async function processOrder() {
@@ -71,30 +76,26 @@
 
         if(utr.length < 10) { alert("Sahi UTR number daalein!"); return; }
         
-        document.getElementById("finalBtn").innerText = "Saving to Sheet...";
+        document.getElementById("finalBtn").innerText = "Processing...";
         document.getElementById("finalBtn").disabled = true;
 
-        // 1. Google Sheet mein data bhejna
         try {
+            // Data Sheet mein bhejna
             await fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
                 body: JSON.stringify({ link: link, views: qtyText, amount: price, utr: utr })
             });
-            console.log("Success: Data sent to sheet");
-        } catch (e) { 
-            console.log("Error:", e); 
-        }
 
-        // 2. WhatsApp par redirect
-        setTimeout(() => {
-            let adminNo = "917388720013";
-            let msg = `*Naya Order!*%0A*Views:* ${qtyText}%0A*Link:* ${link}%0A*UTR:* ${utr}`;
-            window.open(`https://wa.me/${adminNo}?text=${msg}`, '_blank');
+            // Payment section chhupana aur success message dikhana
+            document.getElementById("qr-section").style.display = "none";
+            document.getElementById("success-msg").style.display = "block";
             
+        } catch (e) { 
+            alert("Kuch error aaya, dobara koshish karein.");
             document.getElementById("finalBtn").innerText = "Confirm Order";
             document.getElementById("finalBtn").disabled = false;
-        }, 1000);
+        }
     }
 </script>
 </body>
