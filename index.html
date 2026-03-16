@@ -13,7 +13,8 @@
         .price-box { background: #0ea5e9; color: white; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; font-size: 18px; }
         .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
         #qr-section { display: none; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #334155; }
-        .qr-img { width: 220px; border-radius: 10px; margin-bottom: 10px; border: 5px solid white; }
+        /* QR image fix */
+        .qr-img { width: 240px; height: auto; border-radius: 10px; margin: 10px 0; border: 4px solid white; background: white; }
         .utr-input { border: 2px solid #f59e0b !important; margin-top: 10px; }
         .btn-confirm { background: #2563eb; margin-top: 15px; }
     </style>
@@ -24,7 +25,7 @@
     <h2>🚀 Viral Boost Views</h2>
     
     <label>Insta Video Link:</label>
-    <input type="text" id="videoLink" placeholder="Paste link here...">
+    <input type="text" id="videoLink" placeholder="Yahan link paste karein...">
 
     <label>Views Kitne Chahiye?</label>
     <select id="quantity" onchange="updatePrice()">
@@ -40,9 +41,12 @@
     <button class="btn-pay" onclick="openPayment()">Abhi Order Karein</button>
 
     <div id="qr-section">
-        <p style="color: #fbbf24;">Scan karke ₹<span id="amountText">0</span> Pay Karein</p>
-        <img src="https://i.ibb.co/C3m09z9J/1000302733.png" alt="Payment QR" class="qr-img">
+        <p style="color: #fbbf24; font-weight: bold;">Scan karke ₹<span id="amountText">0</span> Pay Karein</p>
         
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=7388720012@fam%26pn=SMM%26cu=INR" alt="Payment QR" class="qr-img">
+        
+        <p style="font-size: 12px; color: #cbd5e1;">UPI ID: 7388720012@fam</p>
+
         <label>UTR / Transaction ID Dalein:</label>
         <input type="text" id="utr" class="utr-input" placeholder="12 Digit UTR Number">
         
@@ -55,6 +59,11 @@
         let p = document.getElementById("quantity").value;
         document.getElementById("priceDisplay").innerText = "Total: ₹" + p;
         document.getElementById("amountText").innerText = p;
+        
+        // QR Code ko dynamic banaya taaki amount bhi scan karte hi aa jaye
+        let upiId = "7388720012@fam";
+        let qrImg = document.querySelector(".qr-img");
+        qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=upi://pay?pa=${upiId}%26pn=ViralBoost%26am=${p}%26cu=INR`;
     }
 
     function openPayment() {
