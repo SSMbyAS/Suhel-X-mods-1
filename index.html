@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sasta SMM Panel - Fast Views</title>
+    <title>Viral Boost SMM</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; padding: 20px; }
-        .card { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 100%; max-width: 400px; }
-        h2 { color: #007bff; text-align: center; margin-bottom: 20px; }
-        label { font-weight: bold; display: block; margin: 10px 0 5px; }
-        input, select { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
-        .price-tag { background: #e7f3ff; color: #007bff; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; font-size: 18px; }
-        button { width: 100%; background: #28a745; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
-        #qr-section { display: none; text-align: center; margin-top: 20px; border-top: 2px dashed #ddd; padding-top: 20px; }
-        .qr-img { width: 200px; height: 200px; margin-bottom: 10px; border: 2px solid #333; }
-        .utr-box { border: 2px solid #ffc107; background: #fffbeb; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: white; display: flex; justify-content: center; padding: 15px; margin: 0; }
+        .card { background: #1e293b; padding: 20px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 100%; max-width: 400px; border: 1px solid #334155; }
+        h2 { text-align: center; color: #38bdf8; margin-top: 0; }
+        label { display: block; margin: 15px 0 5px; font-weight: bold; font-size: 14px; color: #94a3b8; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; font-size: 16px; }
+        .price-box { background: #0ea5e9; color: white; padding: 10px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; font-size: 18px; }
+        .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        #qr-section { display: none; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #334155; }
+        .qr-img { width: 220px; border-radius: 10px; margin-bottom: 10px; border: 5px solid white; }
+        .utr-input { border: 2px solid #f59e0b !important; margin-top: 10px; }
+        .btn-confirm { background: #2563eb; margin-top: 15px; }
     </style>
 </head>
 <body>
@@ -22,67 +23,64 @@
 <div class="card">
     <h2>🚀 Viral Boost Views</h2>
     
-    <label>Video Link Dalein:</label>
-    <input type="text" id="videoLink" placeholder="https://www.instagram.com/reel/...">
+    <label>Insta Video Link:</label>
+    <input type="text" id="videoLink" placeholder="Paste link here...">
 
-    <label>Views Select Karein:</label>
-    <select id="quantity" onchange="calculatePrice()">
-        <option value="0">--- Select Karein ---</option>
-        <option value="5">20k Views - ₹5</option>
-        <option value="12">50k Views - ₹12</option>
-        <option value="22">100k Views - ₹22</option>
-        <option value="100">500k Views - ₹100</option>
+    <label>Views Kitne Chahiye?</label>
+    <select id="quantity" onchange="updatePrice()">
+        <option value="0">-- Select Karein --</option>
+        <option value="5">20,000 Views - ₹5</option>
+        <option value="12">50,000 Views - ₹12</option>
+        <option value="22">100,000 Views - ₹22</option>
+        <option value="100">500,000 Views - ₹100</option>
     </select>
 
-    <div class="price-tag" id="totalPrice">Total Amount: ₹0</div>
+    <div class="price-box" id="priceDisplay">Total: ₹0</div>
 
-    <button onclick="showPayment()">Pay Now & Order</button>
+    <button class="btn-pay" onclick="openPayment()">Abhi Order Karein</button>
 
     <div id="qr-section">
-        <h3>Pay ₹<span id="payAmount">0</span> via QR Code</h3>
-        <img src="https://via.placeholder.com/200" alt="QR Code" class="qr-img">
-        <p style="font-size: 12px; color: red;">*Payment karne ke baad 12-digit UTR/Ref No. niche dalein</p>
+        <p style="color: #fbbf24;">Scan karke ₹<span id="amountText">0</span> Pay Karein</p>
+        <img src="https://i.ibb.co/C3m09z9J/1000302733.png" alt="Payment QR" class="qr-img">
         
-        <label>UTR Number (Transaction ID):</label>
-        <input type="text" id="utrNumber" class="utr-box" placeholder="123456789012">
+        <label>UTR / Transaction ID Dalein:</label>
+        <input type="text" id="utr" class="utr-input" placeholder="12 Digit UTR Number">
         
-        <button style="background: #007bff;" onclick="submitToWhatsApp()">Confirm Order on WhatsApp</button>
+        <button class="btn-pay btn-confirm" onclick="sendWhatsApp()">Confirm On WhatsApp</button>
     </div>
 </div>
 
 <script>
-    function calculatePrice() {
-        let price = document.getElementById("quantity").value;
-        document.getElementById("totalPrice").innerText = "Total Amount: ₹" + price;
-        document.getElementById("payAmount").innerText = price;
+    function updatePrice() {
+        let p = document.getElementById("quantity").value;
+        document.getElementById("priceDisplay").innerText = "Total: ₹" + p;
+        document.getElementById("amountText").innerText = p;
     }
 
-    function showPayment() {
+    function openPayment() {
         let link = document.getElementById("videoLink").value;
         let qty = document.getElementById("quantity").value;
-        
-        if(link === "" || qty == "0") {
-            alert("Pehle link aur quantity sahi se bharein!");
+        if(link == "" || qty == "0") {
+            alert("Bhai Link aur Views toh choose karo!");
             return;
         }
         document.getElementById("qr-section").style.display = "block";
     }
 
-    function submitToWhatsApp() {
+    function sendWhatsApp() {
         let link = document.getElementById("videoLink").value;
+        let qtyText = document.getElementById("quantity").options[document.getElementById("quantity").selectedIndex].text;
+        let utr = document.getElementById("utr").value;
         let price = document.getElementById("quantity").value;
-        let utr = document.getElementById("utrNumber").value;
-        
+
         if(utr.length < 10) {
-            alert("Please sahi UTR Number dalein!");
+            alert("Sahi UTR number daalein!");
             return;
         }
 
-        // Yahan apna mobile number dalein (91 ke saath)
-        let myNumber = "919876543210"; 
-        let message = `New Order Request:%0ALink: ${link}%0AAmount Paid: ₹${price}%0AUTR No: ${utr}`;
-        
-        window.open(`https://wa.me/${myNumber}?text=${message}`, '_blank');
+        let adminNo = "917388720013";
+        let msg = `*Naya Order Aaya Hai!*%0A%0A*Service:* ${qtyText}%0A*Link:* ${link}%0A*Price:* ₹${price}%0A*UTR:* ${utr}`;
+        window.open(`https://wa.me/${adminNo}?text=${msg}`, '_blank');
     }
 </script>
 
