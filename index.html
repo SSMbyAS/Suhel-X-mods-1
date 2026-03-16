@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viral Boost SMM - Best Quality</title>
+    <title>Viral Boost SMM - Quality Services</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; padding: 15px; margin: 0; }
@@ -12,11 +12,10 @@
         label { display: block; margin: 15px 0 5px; font-weight: bold; font-size: 14px; color: #94a3b8; }
         input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; font-size: 16px; margin-bottom: 10px; }
         .price-box { background: #0ea5e9; color: white; padding: 12px; border-radius: 8px; text-align: center; font-weight: bold; margin-top: 15px; font-size: 20px; border: 2px solid #38bdf8; }
-        .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
-        #qr-section { display: none; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #334155; }
+        .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 15px; border-radius: 8px; margin-top: 20px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        #qr-section, #type-container { display: none; }
         .qr-img { width: 240px; border-radius: 10px; margin: 10px 0; border: 4px solid white; background: white; }
         #success-msg { display: none; background: #065f46; color: #34d399; padding: 20px; border-radius: 8px; margin-top: 20px; text-align: center; font-weight: bold; border: 1px solid #059669; }
-        .badge { background: #334155; padding: 2px 8px; border-radius: 4px; font-size: 12px; margin-left: 5px; }
     </style>
 </head>
 <body>
@@ -24,81 +23,102 @@
 <div class="card" style="margin-top: 10px;">
     <h2>🚀 Viral Boost SMM</h2>
     
-    <label><i class="fas fa-link"></i> Instagram Profile/Video Link:</label>
-    <input type="text" id="targetLink" placeholder="Yahan link paste karein...">
+    <label><i class="fas fa-link"></i> Insta Link (Video/Profile):</label>
+    <input type="text" id="targetLink" placeholder="Link paste karein...">
 
-    <label><i class="fas fa-concierge-bell"></i> Service Chunein:</label>
-    <select id="serviceType" onchange="updateOptions()">
-        <option value="">-- Service Select Karein --</option>
-        <option value="views">Instagram Views (Fast)</option>
-        <option value="likes">Instagram Likes (High Quality)</option>
-        <option value="followers">Instagram Followers (Non-Drop)</option>
+    <label><i class="fas fa-concierge-bell"></i> Service:</label>
+    <select id="serviceType" onchange="updateSubTypes()">
+        <option value="">-- Service Chunein --</option>
+        <option value="views">Instagram Views (Cheap)</option>
+        <option value="likes">Instagram Likes</option>
+        <option value="followers">Instagram Followers</option>
     </select>
 
-    <label><i class="fas fa-chart-line"></i> Quantity Chunein:</label>
+    <div id="type-container">
+        <label><i class="fas fa-filter"></i> Category:</label>
+        <select id="subType" onchange="updateQuantities()">
+            </select>
+    </div>
+
+    <label><i class="fas fa-chart-line"></i> Quantity:</label>
     <select id="quantity" onchange="calculatePrice()">
-        <option value="0">Pehle Service Chunein</option>
+        <option value="0">-- Select Quantity --</option>
     </select>
 
     <div class="price-box" id="priceDisplay">Amount: ₹0</div>
     
-    <button class="btn-pay" id="mainPayBtn" onclick="openPayment()">Abhi Order Karein</button>
+    <button class="btn-pay" id="mainPayBtn" onclick="openPayment()">Pay Now</button>
 
     <div id="qr-section">
         <p style="color: #fbbf24; font-weight: bold;">Scan to Pay: ₹<span id="amountText">0</span></p>
         <img src="" id="qrImage" alt="Payment QR" class="qr-img">
-        <p style="font-size: 14px;">UPI ID: <b style="color:#38bdf8">7388720012@fam</b></p>
-        
-        <label>Enter 12 Digit UTR / Transaction ID:</label>
-        <input type="text" id="utr" placeholder="Example: 4123XXXXXXXX" maxlength="12">
-        <button class="btn-pay" style="background: #2563eb;" id="finalBtn" onclick="processOrder()">Confirm Payment</button>
+        <p>UPI: <b style="color:#38bdf8">7388720012@fam</b></p>
+        <input type="text" id="utr" placeholder="12 Digit UTR / Transaction ID" maxlength="12">
+        <button class="btn-pay" style="background: #2563eb;" id="finalBtn" onclick="processOrder()">Confirm Order</button>
     </div>
 
     <div id="success-msg">
-        <i class="fas fa-check-circle" style="font-size: 40px; display: block; margin-bottom: 10px;"></i>
-        ✅ Your order confirmed!<br>Please wait 1 hour for processing.
+        ✅ Your order confirmed!<br>Please wait 1 hour.
     </div>
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbw8v6Ery9elqBXZYTsq79dLu4EKzs-9027c6QIKbCutB92MiI6eISjQ-bB44FJ3TXQ/exec'; 
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbw8v6Ery9elqBXZYTsq79dLu4EKzs-9027c6QIKbCutB92MiI6eISjQ-bB44FJ3TXQ/exec';
 
-    const optionsData = {
-        views: [
-            {q: "1,000 Views", p: 1},
-            {q: "10,000 Views", p: 8},
-            {q: "50,000 Views", p: 35},
-            {q: "100,000 Views", p: 60},
-            {q: "1,000,000 Views", p: 200}
-        ],
-        likes: [
-            {q: "1,000 Likes", p: 10},
-            {q: "2,000 Likes", p: 20},
-            {q: "5,000 Likes", p: 45},
-            {q: "10,000 Likes", p: 85},
-            {q: "50,000 Likes", p: 400},
-            {q: "100,000 Likes", p: 750}
-        ],
-        followers: [
-            {q: "500 Followers", p: 25},
-            {q: "1,000 Followers", p: 45},
-            {q: "2,000 Followers", p: 85},
-            {q: "5,000 Followers", p: 200},
-            {q: "10,000 Followers", p: 380}
-        ]
+    const database = {
+        views: {
+            "Default": [
+                {q: "1,000 Views", p: 1}, {q: "10,000 Views", p: 8}, {q: "1,000,000 Views", p: 200}
+            ]
+        },
+        likes: {
+            "Default": [
+                {q: "1,000 Likes", p: 10}, {q: "2,000 Likes", p: 20}, {q: "100,000 Likes", p: 750}
+            ]
+        },
+        followers: {
+            "No Refill": [
+                {q: "100 Followers", p: 5}, {q: "1,000 Followers", p: 30}, {q: "10,000 Followers", p: 250}, {q: "100,000 Followers", p: 2000}
+            ],
+            "10% Drop": [
+                {q: "100 Followers", p: 10}, {q: "1,000 Followers", p: 45}, {q: "10,000 Followers", p: 400}, {q: "100,000 Followers", p: 3200}
+            ],
+            "5% Drop": [
+                {q: "100 Followers", p: 13}, {q: "1,000 Followers", p: 50}, {q: "10,000 Followers", p: 450}, {q: "100,000 Followers", p: 4000}
+            ],
+            "100% Drop": [
+                {q: "5,000 Followers", p: 400}
+            ]
+        }
     };
 
-    function updateOptions() {
-        const type = document.getElementById("serviceType").value;
-        const qSelect = document.getElementById("quantity");
-        qSelect.innerHTML = '<option value="0">-- Quantity Chunein --</option>';
+    function updateSubTypes() {
+        const sType = document.getElementById("serviceType").value;
+        const subSelect = document.getElementById("subType");
+        const typeDiv = document.getElementById("type-container");
         
-        if(type && optionsData[type]) {
-            optionsData[type].forEach(item => {
-                let opt = document.createElement("option");
-                opt.value = item.p;
-                opt.text = `${item.q} - ₹${item.p}`;
-                qSelect.add(opt);
+        subSelect.innerHTML = "";
+        if (sType === "followers") {
+            typeDiv.style.display = "block";
+            for (let type in database.followers) {
+                subSelect.add(new Option(type, type));
+            }
+        } else {
+            typeDiv.style.display = "none";
+            subSelect.add(new Option("Default", "Default"));
+        }
+        updateQuantities();
+    }
+
+    function updateQuantities() {
+        const sType = document.getElementById("serviceType").value;
+        const subType = document.getElementById("subType").value;
+        const qSelect = document.getElementById("quantity");
+        qSelect.innerHTML = '<option value="0">-- Quantity --</option>';
+
+        if (sType && database[sType][subType]) {
+            database[sType][subType].forEach(item => {
+                qSelect.add(new Option(`${item.q} - ₹${item.p}`, item.p));
             });
         }
         calculatePrice();
@@ -112,11 +132,7 @@
     }
 
     function openPayment() {
-        const link = document.getElementById("targetLink").value;
-        const qty = document.getElementById("quantity").value;
-        if(link.length < 5 || qty == "0") {
-            alert("Bhai Link aur Service sahi se chuno!"); return;
-        }
+        if(document.getElementById("quantity").value == "0") { alert("Select something!"); return; }
         document.getElementById("qr-section").style.display = "block";
         document.getElementById("mainPayBtn").style.display = "none";
     }
@@ -124,29 +140,22 @@
     async function processOrder() {
         const link = document.getElementById("targetLink").value;
         const service = document.getElementById("serviceType").value;
+        const sub = document.getElementById("subType").value;
         const qtyText = document.getElementById("quantity").options[document.getElementById("quantity").selectedIndex].text;
         const utr = document.getElementById("utr").value;
-        const price = document.getElementById("quantity").value;
 
-        if(utr.length < 10) { alert("Sahi UTR Number dalein!"); return; }
-        
-        document.getElementById("finalBtn").innerText = "Verifying Payment...";
-        document.getElementById("finalBtn").disabled = true;
+        if(utr.length < 10) { alert("Sahi UTR dalein!"); return; }
+        document.getElementById("finalBtn").innerText = "Wait...";
 
         try {
             await fetch(scriptURL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: JSON.stringify({ link: link, views: `${service}: ${qtyText}`, amount: price, utr: utr })
+                body: JSON.stringify({ link, views: `${service}(${sub}): ${qtyText}`, amount: document.getElementById("quantity").value, utr })
             });
-
             document.getElementById("qr-section").style.display = "none";
             document.getElementById("success-msg").style.display = "block";
-            
-        } catch (e) { 
-            alert("Internet slow hai, dobara try karein.");
-            document.getElementById("finalBtn").disabled = false;
-        }
+        } catch (e) { alert("Error!"); }
     }
 </script>
 </body>
