@@ -51,7 +51,7 @@
     <div class="stats-icon"><i class="fas fa-list-ol"></i></div>
     <div class="stats-info" style="text-align: right;">
         <p>Panel Orders</p>
-        <h2 id="totalOrdersCount">Loading...</h2>
+        <h2 id="totalOrdersCount">0</h2>
     </div>
 </div>
 
@@ -105,25 +105,24 @@
 </div>
 
 <script>
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbzXKxtNoHMfrBNr0OqJT4pa_gkXbkoesIrdFzt6IJ8UahCxafGZHOkQe-6ttjOSxcQE/exec';
+    // Nayi URL yahan laga di hai
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbxzD2vrcI2sBV3s5h8tNBNGcikRC_cUP81YyOVAXa8_-U_VVa075zV-m59T1wk7V_Ul/exec';
     const myWebLink = window.location.href;
 
-    // Sharing Functions
     function shareWA() { window.open(`https://api.whatsapp.com/send?text=Best SMM Panel! Get Followers and Likes here: ${myWebLink}`, '_blank'); }
     function shareTG() { window.open(`https://t.me/share/url?url=${myWebLink}&text=Best SMM Panel for Instagram!`, '_blank'); }
     function copyLink() { navigator.clipboard.writeText(myWebLink); alert("Link Copied! ✅"); }
 
-    // Fetch Total Orders from Sheet
+    // Fetch Total Orders (Ab 0 se start hoga)
     async function fetchTotalOrders() {
         try {
             const response = await fetch(scriptURL + "?action=getCount");
             const count = await response.text();
-            document.getElementById("totalOrdersCount").innerText = (parseInt(count) || 0) + 86655831;
-        } catch (e) { document.getElementById("totalOrdersCount").innerText = "86655831"; }
+            document.getElementById("totalOrdersCount").innerText = parseInt(count) || 0;
+        } catch (e) { document.getElementById("totalOrdersCount").innerText = "0"; }
     }
     fetchTotalOrders();
 
-    // Service Data (Sahi IDs ke saath)
     const serviceData = {
         "views": [{id: "9259", name: "10k Views", price: 5, qty: 10000},{id: "9259", name: "100k Views", price: 30, qty: 100000}],
         "likes": [{id: "205", name: "1k Likes", price: 10, qty: 1000}],
@@ -168,7 +167,7 @@
     }
 
     async function submitOrder() {
-        let utrVal = document.getElementById("utr").value;
+        let utrVal = document.getElementById("utr").value.trim();
         if(utrVal.length < 12) return alert("Sahi 12-digit UTR Number daalo!");
         
         document.getElementById("confirmBtn").innerText = "Processing...";
@@ -182,7 +181,7 @@
                     serviceName: s.name, serviceID: s.id, qty: s.qty, amount: s.price, utr: utrVal
                 })
             });
-            alert("✅ Order Sent! It will be processed after UTR verification.");
+            alert("✅ Order Sent! Verification ke baad order shuru ho jayega.");
             location.reload();
         } catch (e) { alert("Error submitting order!"); }
     }
