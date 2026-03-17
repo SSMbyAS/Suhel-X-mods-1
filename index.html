@@ -393,3 +393,309 @@
         document.getElementById("totalOrdersCount").innerText = 145 + realCount;
     });
 </script>
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyqdvyG3GVA5PAAFPSVrbi2JOc1vwewJCheoxRvgG7cxaz8A1VEjaTkRKCc4qAh9VnX/exec';
+    
+    let isReseller = false; // Check karne ke liye ki reseller login hai ya nahi
+
+    // Login Logic
+    function checkLogin() {
+        const u = document.getElementById("user").value;
+        const p = document.getElementById("pass").value;
+        
+        if(u === "admin" && p === "suhel786") {
+            isReseller = false;
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("main-content").style.display = "flex";
+        } 
+        else if(u === "reseller" && p === "suhel123") { // Reseller Details
+            isReseller = true;
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("main-content").style.display = "flex";
+            alert("Reseller Mode Active: Har service par ₹2 discount! ✅");
+        }
+        else {
+            alert("Galat Password Hai Bhai! ❌");
+        }
+    }
+
+    // Share link setup same...
+    const currentURL = window.location.href;
+    document.getElementById('waShare').href = `https://api.whatsapp.com/send?text=Instagram Services starting at ₹1. Check out: ${currentURL}`;
+    document.getElementById('tgShare').href = `https://t.me/share/url?url=${currentURL}&text=MD SUHEL SMM PANEL`;
+
+    function copyURL() {
+        navigator.clipboard.writeText(currentURL);
+        alert("Link Copy Ho Gya! ✅");
+    }
+
+    // Service Data (Isme se ₹2 automatic kam honge login ke baad)
+    const serviceData = {
+        "views": [
+            {id: "V1", name: "10k Views", price: 5, qty: 10000},
+            {id: "V2", name: "20k Views", price: 10, qty: 20000},
+            {id: "V3", name: "50k Views", price: 18, qty: 50000},
+            {id: "V4", name: "100k Views", price: 30, qty: 100000},
+            {id: "V5", name: "1M Views", price: 200, qty: 1000000}
+        ],
+        "likes": [
+            {id: "L1", name: "1k Likes", price: 10, qty: 1000},
+            {id: "L2", name: "10k Likes", price: 100, qty: 10000},
+            {id: "L3", name: "100k Likes", price: 600, qty: 100000}
+        ],
+        "likes_in": [
+            {id: "LI1", name: "1k Indian Likes 🇮🇳", price: 15, qty: 1000},
+            {id: "LI2", name: "10k Indian Likes 🇮🇳", price: 120, qty: 10000},
+            {id: "LI3", name: "100k Indian Likes 🇮🇳", price: 1100, qty: 100000}
+        ],
+        "shares": [
+            {id: "S1", name: "100 Shares", price: 4, qty: 100}, // Price 2 se bada hona chahiye
+            {id: "S2", name: "1000 Shares", price: 6, qty: 1000}
+        ],
+        "f_no": [
+            {id: "FN1", name: "100 Followers (No Refill)", price: 5, qty: 100},
+            {id: "FN2", name: "1k Followers (No Refill)", price: 20, qty: 1000},
+            {id: "FN3", name: "10k Followers (No Refill)", price: 190, qty: 10000}
+        ],
+        "f_10": [
+            {id: "F101", name: "100 Followers (0-10% Drop)", price: 10, qty: 100},
+            {id: "F102", name: "1k Followers (0-10% Drop)", price: 36, qty: 1000}
+        ],
+        "f_05": [
+            {id: "F051", name: "100 Followers (0-05% Drop)", price: 15, qty: 100},
+            {id: "F052", name: "1k Followers (0-05% Drop)", price: 50, qty: 1000}
+        ],
+        "pkg_f": [
+            {id: "PF1", name: "5k Followers Package 📦", price: 380, qty: 5000},
+            {id: "PF2", name: "10k Followers Package 📦", price: 750, qty: 10000}
+        ],
+        "pkg_v": [
+            {id: "PV1", name: "10k Views Package 📦", price: 6, qty: 10000},
+            {id: "PV2", name: "50k Views Package 📦", price: 15, qty: 50000}
+        ],
+        "pkg_l": [
+            {id: "PL1", name: "10k Likes Package 📦", price: 90, qty: 10000},
+            {id: "PL2", name: "20k Likes Package 📦", price: 160, qty: 20000}
+        ],
+        "comm": [
+            {id: "C1", name: "100 Random Comments", price: 7, qty: 100},
+            {id: "C2", name: "1000 Random Comments", price: 46, qty: 1000}
+        ]
+    };
+
+    function loadServices() {
+        const cat = document.getElementById("categorySelect").value;
+        const sSelect = document.getElementById("serviceSelect");
+        sSelect.innerHTML = "";
+        if(cat && serviceData[cat]) {
+            serviceData[cat].forEach(s => {
+                let finalPrice = isReseller ? (s.price - 2) : s.price;
+                if(finalPrice < 1) finalPrice = 1; // Price 1 se kam na ho
+                
+                let opt = document.createElement("option");
+                // Original price ki jagah finalPrice object mein daal rahe hain
+                let serviceObj = {...s, price: finalPrice}; 
+                opt.value = JSON.stringify(serviceObj);
+                opt.text = `${s.name} - ₹${finalPrice}`;
+                sSelect.add(opt);
+            });
+        } else { sSelect.add(new Option("Choose Category First", "")); }
+        updatePrice();
+    }
+
+    function updatePrice() {
+        const sVal = document.getElementById("serviceSelect").value;
+        if(sVal) {
+            const s = JSON.parse(sVal);
+            document.getElementById("priceDisplay").innerText = "₹" + s.price;
+            document.getElementById("finalAmt").innerText = s.price;
+            document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=7388720012@fam%26am=${s.price}%26cu=INR`;
+        }
+    }
+
+    function showQR() {
+        if(!document.getElementById("targetLink").value) return alert("Pehle link daalo!");
+        document.getElementById("qr-section").style.display = "block";
+        document.getElementById("payBtn").style.display = "none";
+    }
+
+    async function submitOrder() {
+        let utrVal = document.getElementById("utr").value.trim();
+        if(utrVal.length < 12) return alert("❌ Sahi 12-digit UTR daalo!");
+        document.getElementById("confirmBtn").innerText = "Sending...";
+        const s = JSON.parse(document.getElementById("serviceSelect").value);
+        try {
+            await fetch(scriptURL, {
+                method: 'POST', mode: 'no-cors',
+                body: JSON.stringify({
+                    link: document.getElementById("targetLink").value,
+                    serviceName: s.name, 
+                    qty: s.qty, 
+                    amount: s.price, 
+                    utr: utrVal,
+                    role: isReseller ? "Reseller" : "User" // Sheet mein role bhi jayega
+                })
+            });
+            alert("✅ Order Sent! Suhel Bhai jald hi start kar denge.");
+            location.reload();
+        } catch (e) { alert("Error! WhatsApp par message karein."); }
+    }
+
+    fetch(scriptURL + "?action=getCount").then(r => r.text()).then(d => {
+        let realCount = parseInt(d) || 0;
+        document.getElementById("totalOrdersCount").innerText = 145 + realCount;
+    });
+</script>
+<script>
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbyqdvyG3GVA5PAAFPSVrbi2JOc1vwewJCheoxRvgG7cxaz8A1VEjaTkRKCc4qAh9VnX/exec';
+    
+    let isReseller = false; // Check karne ke liye ki reseller login hai ya nahi
+
+    // Login Logic
+    function checkLogin() {
+        const u = document.getElementById("user").value;
+        const p = document.getElementById("pass").value;
+        
+        if(u === "admin" && p === "suhel786") {
+            isReseller = false;
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("main-content").style.display = "flex";
+        } 
+        else if(u === "reseller" && p === "suhel123") { // Reseller Details
+            isReseller = true;
+            document.getElementById("login-overlay").style.display = "none";
+            document.getElementById("main-content").style.display = "flex";
+            alert("Reseller Mode Active: Har service par ₹2 discount! ✅");
+        }
+        else {
+            alert("Galat Password Hai Bhai! ❌");
+        }
+    }
+
+    // Share link setup same...
+    const currentURL = window.location.href;
+    document.getElementById('waShare').href = `https://api.whatsapp.com/send?text=Instagram Services starting at ₹1. Check out: ${currentURL}`;
+    document.getElementById('tgShare').href = `https://t.me/share/url?url=${currentURL}&text=MD SUHEL SMM PANEL`;
+
+    function copyURL() {
+        navigator.clipboard.writeText(currentURL);
+        alert("Link Copy Ho Gya! ✅");
+    }
+
+    // Service Data (Isme se ₹2 automatic kam honge login ke baad)
+    const serviceData = {
+        "views": [
+            {id: "V1", name: "10k Views", price: 5, qty: 10000},
+            {id: "V2", name: "20k Views", price: 10, qty: 20000},
+            {id: "V3", name: "50k Views", price: 18, qty: 50000},
+            {id: "V4", name: "100k Views", price: 30, qty: 100000},
+            {id: "V5", name: "1M Views", price: 200, qty: 1000000}
+        ],
+        "likes": [
+            {id: "L1", name: "1k Likes", price: 10, qty: 1000},
+            {id: "L2", name: "10k Likes", price: 100, qty: 10000},
+            {id: "L3", name: "100k Likes", price: 600, qty: 100000}
+        ],
+        "likes_in": [
+            {id: "LI1", name: "1k Indian Likes 🇮🇳", price: 15, qty: 1000},
+            {id: "LI2", name: "10k Indian Likes 🇮🇳", price: 120, qty: 10000},
+            {id: "LI3", name: "100k Indian Likes 🇮🇳", price: 1100, qty: 100000}
+        ],
+        "shares": [
+            {id: "S1", name: "100 Shares", price: 4, qty: 100}, // Price 2 se bada hona chahiye
+            {id: "S2", name: "1000 Shares", price: 6, qty: 1000}
+        ],
+        "f_no": [
+            {id: "FN1", name: "100 Followers (No Refill)", price: 5, qty: 100},
+            {id: "FN2", name: "1k Followers (No Refill)", price: 20, qty: 1000},
+            {id: "FN3", name: "10k Followers (No Refill)", price: 190, qty: 10000}
+        ],
+        "f_10": [
+            {id: "F101", name: "100 Followers (0-10% Drop)", price: 10, qty: 100},
+            {id: "F102", name: "1k Followers (0-10% Drop)", price: 36, qty: 1000}
+        ],
+        "f_05": [
+            {id: "F051", name: "100 Followers (0-05% Drop)", price: 15, qty: 100},
+            {id: "F052", name: "1k Followers (0-05% Drop)", price: 50, qty: 1000}
+        ],
+        "pkg_f": [
+            {id: "PF1", name: "5k Followers Package 📦", price: 380, qty: 5000},
+            {id: "PF2", name: "10k Followers Package 📦", price: 750, qty: 10000}
+        ],
+        "pkg_v": [
+            {id: "PV1", name: "10k Views Package 📦", price: 6, qty: 10000},
+            {id: "PV2", name: "50k Views Package 📦", price: 15, qty: 50000}
+        ],
+        "pkg_l": [
+            {id: "PL1", name: "10k Likes Package 📦", price: 90, qty: 10000},
+            {id: "PL2", name: "20k Likes Package 📦", price: 160, qty: 20000}
+        ],
+        "comm": [
+            {id: "C1", name: "100 Random Comments", price: 7, qty: 100},
+            {id: "C2", name: "1000 Random Comments", price: 46, qty: 1000}
+        ]
+    };
+
+    function loadServices() {
+        const cat = document.getElementById("categorySelect").value;
+        const sSelect = document.getElementById("serviceSelect");
+        sSelect.innerHTML = "";
+        if(cat && serviceData[cat]) {
+            serviceData[cat].forEach(s => {
+                let finalPrice = isReseller ? (s.price - 2) : s.price;
+                if(finalPrice < 1) finalPrice = 1; // Price 1 se kam na ho
+                
+                let opt = document.createElement("option");
+                // Original price ki jagah finalPrice object mein daal rahe hain
+                let serviceObj = {...s, price: finalPrice}; 
+                opt.value = JSON.stringify(serviceObj);
+                opt.text = `${s.name} - ₹${finalPrice}`;
+                sSelect.add(opt);
+            });
+        } else { sSelect.add(new Option("Choose Category First", "")); }
+        updatePrice();
+    }
+
+    function updatePrice() {
+        const sVal = document.getElementById("serviceSelect").value;
+        if(sVal) {
+            const s = JSON.parse(sVal);
+            document.getElementById("priceDisplay").innerText = "₹" + s.price;
+            document.getElementById("finalAmt").innerText = s.price;
+            document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=7388720012@fam%26am=${s.price}%26cu=INR`;
+        }
+    }
+
+    function showQR() {
+        if(!document.getElementById("targetLink").value) return alert("Pehle link daalo!");
+        document.getElementById("qr-section").style.display = "block";
+        document.getElementById("payBtn").style.display = "none";
+    }
+
+    async function submitOrder() {
+        let utrVal = document.getElementById("utr").value.trim();
+        if(utrVal.length < 12) return alert("❌ Sahi 12-digit UTR daalo!");
+        document.getElementById("confirmBtn").innerText = "Sending...";
+        const s = JSON.parse(document.getElementById("serviceSelect").value);
+        try {
+            await fetch(scriptURL, {
+                method: 'POST', mode: 'no-cors',
+                body: JSON.stringify({
+                    link: document.getElementById("targetLink").value,
+                    serviceName: s.name, 
+                    qty: s.qty, 
+                    amount: s.price, 
+                    utr: utrVal,
+                    role: isReseller ? "Reseller" : "User" // Sheet mein role bhi jayega
+                })
+            });
+            alert("✅ Order Sent! Suhel Bhai jald hi start kar denge.");
+            location.reload();
+        } catch (e) { alert("Error! WhatsApp par message karein."); }
+    }
+
+    fetch(scriptURL + "?action=getCount").then(r => r.text()).then(d => {
+        let realCount = parseInt(d) || 0;
+        document.getElementById("totalOrdersCount").innerText = 145 + realCount;
+    });
+</script>
