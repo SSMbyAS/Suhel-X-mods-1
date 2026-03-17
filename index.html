@@ -3,17 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>StarSMM - Professional Panel</title>
+    <title>StarSMM - High Speed Panel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; display: flex; flex-direction: column; align-items: center; padding: 10px; margin: 0; }
-        .logo-box { background: linear-gradient(135deg, #38bdf8, #2563eb); padding: 12px 30px; border-radius: 50px; margin: 20px 0; border: 2px solid white; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
-        .logo-text { font-size: 22px; font-weight: 900; letter-spacing: 1px; }
-        .card { background: #1e293b; padding: 20px; border-radius: 15px; width: 100%; max-width: 400px; border: 1px solid #334155; box-sizing: border-box; }
-        label { display: block; margin: 12px 0 5px; font-weight: bold; font-size: 14px; color: #94a3b8; }
-        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; margin-bottom: 15px; outline: none; font-size: 14px; }
-        optgroup { background: #1e293b; color: #38bdf8; font-weight: bold; }
-        option { color: white; background: #0f172a; }
+        .logo-box { background: linear-gradient(135deg, #38bdf8, #2563eb); padding: 12px 30px; border-radius: 50px; margin: 15px 0; border: 2px solid white; box-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
+        .logo-text { font-size: 20px; font-weight: 900; letter-spacing: 1px; }
+        .card { background: #1e293b; padding: 20px; border-radius: 15px; width: 100%; max-width: 420px; border: 1px solid #334155; box-sizing: border-box; }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; font-size: 13px; color: #94a3b8; }
+        input, select { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #334155; background: #0f172a; color: white; box-sizing: border-box; margin-bottom: 10px; outline: none; font-size: 14px; }
         .price-box { background: #0ea5e9; color: white; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; font-size: 22px; border: 2px solid #38bdf8; margin: 15px 0; }
         .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 15px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; transition: 0.3s; }
         #qr-section { display: none; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #334155; }
@@ -22,48 +20,41 @@
 </head>
 <body>
 
-<div class="logo-box">
-    <span class="logo-text">MD SUHEL</span>
-</div>
+<div class="logo-box"><span class="logo-text">MD SUHEL SMM</span></div>
 
 <div class="card">
-    <h2>🚀 SMM Service Panel</h2>
-    
-    <label><i class="fas fa-link"></i> Target Link:</label>
-    <input type="text" id="targetLink" placeholder="Paste Instagram Link here...">
+    <label>Target Link:</label>
+    <input type="text" id="targetLink" placeholder="Paste Instagram Link...">
 
-    <label><i class="fas fa-list"></i> Select Service:</label>
-    <select id="serviceType" onchange="calculate()">
-        <optgroup label="📸 Instagram Followers">
-            <option value="120|Followers (Lifetime Refill)|101">Followers (Lifetime Refill) - ₹120</option>
-            <option value="80|Followers (Indian 🇮🇳)|30067">Followers (Indian Mix) - ₹80</option>
-            <option value="50|Followers (No Refill)|30068">Followers (No Refill/Drop) - ₹50</option>
-        </optgroup>
-        <optgroup label="❤️ Instagram Likes">
-            <option value="25|Instagram Likes (Real)|205">Instagram Likes (Real) - ₹25</option>
-            <option value="15|Instagram Likes (Cheap)|9260">Instagram Likes (Cheap) - ₹15</option>
-        </optgroup>
-        <optgroup label="🎬 Instagram Views">
-            <option value="10|Instagram Views (Fast)|9259">Instagram Views (Super Fast) - ₹10</option>
-            <option value="20|Instagram Reels Views|110">Instagram Reels Views - ₹20</option>
-        </optgroup>
-        <optgroup label="💬 Others">
-            <option value="40|Instagram Comments|30069">Instagram Comments (Emoji) - ₹40</option>
-        </optgroup>
+    <label>Select Service Category:</label>
+    <select id="category" onchange="updateServices()">
+        <option value="">-- Choose Category --</option>
+        <option value="views">Instagram Views</option>
+        <option value="likes">Instagram Likes</option>
+        <option value="likes_in">Instagram Likes India 🇮🇳</option>
+        <option value="shares">Instagram Shares</option>
+        <option value="f_no">Followers (No Refill)</option>
+        <option value="f_10">Followers (0-10% Drop)</option>
+        <option value="f_05">Followers (0-05% Drop)</option>
+        <option value="pkg_f">Follower Packages 📦</option>
+        <option value="pkg_v">Views Packages 📦</option>
+        <option value="pkg_l">Likes Packages 📦</option>
+        <option value="comm">Comments Random</option>
     </select>
 
-    <label><i class="fas fa-sort-numeric-up"></i> Quantity:</label>
-    <input type="number" id="qty" value="1000" min="100" step="100" oninput="calculate()">
-    
-    <div class="price-box" id="priceDisp">Total: ₹120.00</div>
+    <label>Select Package:</label>
+    <select id="serviceType" onchange="calculate()">
+        <option value="0|Select Category First|0|0">-- Select Package --</option>
+    </select>
+
+    <div class="price-box" id="priceDisp">Amount: ₹0.00</div>
     
     <button class="btn-pay" id="payBtn" onclick="showQR()">Proceed to Pay</button>
 
     <div id="qr-section">
-        <p style="color:#fbbf24; font-weight:bold;">Pay: ₹<span id="amtText">120.00</span></p>
+        <p style="color:#fbbf24; font-weight:bold;">Scan & Pay: ₹<span id="amtText">0.00</span></p>
         <img src="" id="qrImg" class="qr-img">
-        <p style="font-size:12px; margin-bottom: 10px;">UPI: 7388720012@fam</p>
-        
+        <p style="font-size:12px;">UPI: 7388720012@fam</p>
         <input type="text" id="utr" placeholder="Enter 12 Digit UTR Number">
         <button class="btn-pay" style="background:#2563eb;" id="finalBtn" onclick="sendOrder()">Confirm Order</button>
     </div>
@@ -72,54 +63,69 @@
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbwvj3VdKn7SBlfjOpJm9kssYuQbPK4X_gQwENxACJilvUnGXHwWZGIxJfo6Bq_O_zhM/exec';
 
-    function calculate() {
-        let valData = document.getElementById("serviceType").value.split('|');
-        let ratePer1k = parseFloat(valData[0]);
-        let q = parseInt(document.getElementById("qty").value) || 0;
-        let total = ((q / 1000) * ratePer1k).toFixed(2);
-        
-        document.getElementById("priceDisp").innerText = "Total: ₹" + total;
-        document.getElementById("amtText").innerText = total;
-        document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=7388720012@fam%26am=${total}%26cu=INR`;
+    const services = {
+        views: [["5|10k Views|9259|10000"], ["10|20k Views|9259|20000"], ["18|50k Views|9259|50000"], ["30|100k Views|9259|100000"], ["200|1M Views|9259|1000000"]],
+        likes: [["10|1k Likes|205|1000"], ["100|10k Likes|205|10000"], ["600|100k Likes|205|100000"]],
+        likes_in: [["15|1k Likes India|205|1000"], ["120|10k Likes India|205|10000"], ["1100|100k Likes India|205|100000"]],
+        shares: [["1|100 Shares|30067|100"], ["1.5|1k Shares|30067|1000"], ["12|10k Shares|30067|10000"], ["8|100k Shares|30067|100000"]],
+        f_no: [["3|100 Followers|101|100"], ["20|1k Followers|101|1000"], ["190|10k Followers|101|10000"]],
+        f_10: [["3|100 Followers|101|100"], ["36|1k Followers|101|1000"], ["350|10k Followers|101|10000"]],
+        f_05: [["5|100 Followers|101|100"], ["50|1k Followers|101|1000"], ["420|10k Followers|101|10000"]],
+        pkg_f: [["380|5k Followers Pkg|101|5000"], ["750|10k Followers Pkg|101|10000"]],
+        pkg_v: [["6|10k Views Pkg|9259|10000"], ["15|50k Views Pkg|9259|50000"], ["25|100k Views Pkg|9259|100000"], ["60|500k Views Pkg|9259|500000"], ["120|1M Views Pkg|9259|1000000"]],
+        pkg_l: [["90|10k Likes Pkg|205|10000"], ["160|20k Likes Pkg|205|20000"]],
+        comm: [["7|100 Comments|30069|100"], ["46|1000 Comments|30069|1000"]]
+    };
+
+    function updateServices() {
+        const cat = document.getElementById("category").value;
+        const serviceSelect = document.getElementById("serviceType");
+        serviceSelect.innerHTML = "";
+        if (services[cat]) {
+            services[cat].forEach(s => {
+                let d = s[0].split('|');
+                let opt = document.createElement("option");
+                opt.value = s[0];
+                opt.text = d[1] + " - ₹" + d[0];
+                serviceSelect.add(opt);
+            });
+        }
+        calculate();
     }
-    calculate();
+
+    function calculate() {
+        let data = document.getElementById("serviceType").value.split('|');
+        let amt = data[0] || 0;
+        document.getElementById("priceDisp").innerText = "Amount: ₹" + amt;
+        document.getElementById("amtText").innerText = amt;
+        document.getElementById("qrImg").src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=7388720012@fam%26am=${amt}%26cu=INR`;
+    }
 
     function showQR() {
-        if(!document.getElementById("targetLink").value) { alert("Pehle link daalo bhai!"); return; }
+        if(!document.getElementById("targetLink").value) return alert("Link daalo!");
         document.getElementById("qr-section").style.display = "block";
         document.getElementById("payBtn").style.display = "none";
     }
 
     async function sendOrder() {
-        let utr = document.getElementById("utr").value;
-        if(utr.length < 10) { alert("Sahi 12-digit UTR daalo!"); return; }
-        
+        if(document.getElementById("utr").value.length < 10) return alert("Sahi UTR!");
         document.getElementById("finalBtn").innerText = "Processing...";
-        document.getElementById("finalBtn").disabled = true;
-
-        let valData = document.getElementById("serviceType").value.split('|');
-        let q = document.getElementById("qty").value;
-        let total = ((q / 1000) * parseFloat(valData[0])).toFixed(2);
-
+        let data = document.getElementById("serviceType").value.split('|');
         try {
             await fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors',
+                method: 'POST', mode: 'no-cors',
                 body: JSON.stringify({
                     link: document.getElementById("targetLink").value,
-                    serviceName: valData[1],
-                    serviceID: valData[2],
-                    qty: q,
-                    amount: total,
-                    utr: utr
+                    serviceName: data[1],
+                    serviceID: data[2],
+                    qty: data[3],
+                    amount: data[0],
+                    utr: document.getElementById("utr").value
                 })
             });
-            alert("✅ Order Placed! Balance check karke start ho jayega.");
+            alert("✅ Order Placed!");
             location.reload();
-        } catch (e) {
-            alert("Error! Please try again.");
-            document.getElementById("finalBtn").disabled = false;
-        }
+        } catch (e) { alert("Error!"); }
     }
 </script>
 </body>
