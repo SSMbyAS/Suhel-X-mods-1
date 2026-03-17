@@ -19,7 +19,6 @@
         .logo-box { background: rgba(255, 255, 255, 0.1); padding: 8px 20px; border-radius: 50px; border: 2px solid rgba(255,255,255,0.2); }
         .changing-text { font-weight: 900; letter-spacing: 2px; font-size: 16px; animation: rainbow 3s linear infinite; }
 
-        /* Trust & Price Match Banner */
         .trust-banner { width: 95%; max-width: 430px; background: linear-gradient(90deg, #1e293b, #334155); border-left: 5px solid #fbbf24; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; line-height: 1.4; border: 1px solid rgba(251, 191, 36, 0.3); }
 
         .stats-card { width: 95%; max-width: 430px; background: white; color: #1e293b; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
@@ -32,7 +31,6 @@
         .price-box { background: #0ea5e9; color: white; padding: 15px; border-radius: 10px; text-align: center; font-weight: bold; font-size: 24px; margin: 20px 0; border: 2px solid #38bdf8; }
         .btn-pay { width: 100%; background: #22c55e; color: white; border: none; padding: 16px; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; }
         
-        /* Floating WhatsApp Button */
         .whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.4); z-index: 100; text-decoration: none; border: 2px solid white; }
 
         #qr-section { display: none; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #334155; }
@@ -42,7 +40,7 @@
 <body>
 
 <div class="header-top">
-    <div class="logo-box"><span class="changing-text">MD SUHEL SMM</span></div>
+    <div class="logo-box"><span class="changing-text">by AS-SMM</span></div>
 </div>
 
 <div class="trust-banner">
@@ -64,9 +62,17 @@
     <label><i class="fas fa-layer-group"></i> Category</label>
     <select id="categorySelect" onchange="loadServices()">
         <option value="">-- Choose Category --</option>
-        <option value="views">Instagram Views (Starting ₹1)</option>
-        <option value="likes">Instagram Likes</option>
-        <option value="f_no">Followers (Real/No Drop)</option>
+        <option value="views">Instagram Views 🎬</option>
+        <option value="likes">Instagram Likes ♥️</option>
+        <option value="likes_in">Instagram Likes India 🇮🇳</option>
+        <option value="shares">Instagram Shares 🚀</option>
+        <option value="f_no">Followers No Refill 🫥</option>
+        <option value="f_10">Followers 0-10% Drop 📉</option>
+        <option value="f_05">Followers 0-05% Drop 📉</option>
+        <option value="pkg_f">Follower Package 📦</option>
+        <option value="pkg_v">Views Package 📦</option>
+        <option value="pkg_l">Likes Package 📦</option>
+        <option value="comm">Comments Random 💬</option>
     </select>
 
     <label><i class="fas fa-concierge-bell"></i> Package</label>
@@ -94,17 +100,61 @@
 
     const serviceData = {
         "views": [
-            {id: "V1", name: "1k Views (Instant)", price: 1, qty: 1000},
-            {id: "V2", name: "10k Views (Bulk)", price: 7, qty: 10000},
-            {id: "V3", name: "100k Views (Mega)", price: 30, qty: 100000}
+            {id: "V1", name: "10k Views", price: 5, qty: 10000},
+            {id: "V2", name: "20k Views", price: 10, qty: 20000},
+            {id: "V3", name: "50k Views", price: 18, qty: 50000},
+            {id: "V4", name: "100k Views", price: 30, qty: 100000},
+            {id: "V5", name: "1M Views", price: 200, qty: 1000000}
         ],
         "likes": [
-            {id: "L1", name: "1k Likes (Real)", price: 10, qty: 1000},
-            {id: "L2", name: "10k Likes (Bulk)", price: 90, qty: 10000}
+            {id: "L1", name: "1k Likes", price: 10, qty: 1000},
+            {id: "L2", name: "10k Likes", price: 100, qty: 10000},
+            {id: "L3", name: "100k Likes", price: 600, qty: 100000}
+        ],
+        "likes_in": [
+            {id: "LI1", name: "1k Indian Likes 🇮🇳", price: 15, qty: 1000},
+            {id: "LI2", name: "10k Indian Likes 🇮🇳", price: 120, qty: 10000},
+            {id: "LI3", name: "100k Indian Likes 🇮🇳", price: 1100, qty: 100000}
+        ],
+        "shares": [
+            {id: "S1", name: "100 Shares", price: 1, qty: 100},
+            {id: "S2", name: "1000 Shares", price: 1.5, qty: 1000},
+            {id: "S3", name: "10000 Shares", price: 12, qty: 10000},
+            {id: "S4", name: "100000 Shares", price: 8, qty: 100000}
         ],
         "f_no": [
-            {id: "F1", name: "1k Followers (No Drop)", price: 40, qty: 1000},
-            {id: "F2", name: "5k Followers (Best Deal)", price: 180, qty: 5000}
+            {id: "FN1", name: "100 Followers (No Refill)", price: 3, qty: 100},
+            {id: "FN2", name: "1k Followers (No Refill)", price: 20, qty: 1000},
+            {id: "FN3", name: "10k Followers (No Refill)", price: 190, qty: 10000}
+        ],
+        "f_10": [
+            {id: "F101", name: "100 Followers (0-10% Drop)", price: 3, qty: 100},
+            {id: "F102", name: "1k Followers (0-10% Drop)", price: 36, qty: 1000},
+            {id: "F103", name: "10k Followers (0-10% Drop)", price: 350, qty: 10000}
+        ],
+        "f_05": [
+            {id: "F051", name: "100 Followers (0-05% Drop)", price: 5, qty: 100},
+            {id: "F052", name: "1k Followers (0-05% Drop)", price: 50, qty: 1000},
+            {id: "F053", name: "10k Followers (0-05% Drop)", price: 420, qty: 10000}
+        ],
+        "pkg_f": [
+            {id: "PF1", name: "5k Followers Package 📦", price: 380, qty: 5000},
+            {id: "PF2", name: "10k Followers Package 📦", price: 750, qty: 10000}
+        ],
+        "pkg_v": [
+            {id: "PV1", name: "10k Views Package 📦", price: 6, qty: 10000},
+            {id: "PV2", name: "50k Views Package 📦", price: 15, qty: 50000},
+            {id: "PV3", name: "100k Views Package 📦", price: 25, qty: 100000},
+            {id: "PV4", name: "500k Views Package 📦", price: 60, qty: 500000},
+            {id: "PV5", name: "1M Views Package 📦", price: 120, qty: 1000000}
+        ],
+        "pkg_l": [
+            {id: "PL1", name: "10k Likes Package 📦", price: 90, qty: 10000},
+            {id: "PL2", name: "20k Likes Package 📦", price: 160, qty: 20000}
+        ],
+        "comm": [
+            {id: "C1", name: "100 Random Comments", price: 7, qty: 100},
+            {id: "C2", name: "1000 Random Comments", price: 46, qty: 1000}
         ]
     };
 
@@ -159,10 +209,9 @@
         } catch (e) { alert("Error! WhatsApp support par message karein."); }
     }
 
-    // Fake Orders Counter logic for Trust
     fetch(scriptURL + "?action=getCount").then(r => r.text()).then(d => {
         let realCount = parseInt(d) || 0;
-        document.getElementById("totalOrdersCount").innerText = realCount + 1845; // Adding 1845 fake orders
+        document.getElementById("totalOrdersCount").innerText = realCount + 1845;
     });
 </script>
 </body>
