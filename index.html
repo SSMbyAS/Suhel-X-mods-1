@@ -21,6 +21,13 @@
 
         .trust-banner { width: 95%; max-width: 430px; background: linear-gradient(90deg, #1e293b, #334155); border-left: 5px solid #fbbf24; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; line-height: 1.4; border: 1px solid rgba(251, 191, 36, 0.3); }
 
+        /* Share Section */
+        .share-box { width: 95%; max-width: 430px; display: flex; gap: 10px; margin-bottom: 15px; }
+        .share-btn { flex: 1; padding: 10px; border-radius: 8px; border: none; color: white; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; text-decoration: none; font-size: 12px; }
+        .wa-btn { background: var(--whatsapp); }
+        .tg-btn { background: var(--telegram); }
+        .cp-btn { background: #64748b; }
+
         .stats-card { width: 95%; max-width: 430px; background: white; color: #1e293b; border-radius: 12px; padding: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
         .stats-info h2 { margin: 0; font-size: 24px; color: #0f172a; font-weight: 800; }
 
@@ -40,18 +47,24 @@
 <body>
 
 <div class="header-top">
-    <div class="logo-box"><span class="changing-text">by AS-SMM</span></div>
+    <div class="logo-box"><span class="changing-text">MD SUHEL SMM</span></div>
 </div>
 
 <div class="trust-banner">
     <i class="fas fa-hand-holding-usd" style="color:#fbbf24;"></i> <b>Sabse Sasta Wada:</b> Kahin aur sasta mil raha hai? Hamein WhatsApp karein, hum price match karenge!
 </div>
 
+<div class="share-box">
+    <a href="https://api.whatsapp.com/send?text=SMM Services starting at ₹1. Check out MD SUHEL SMM: " class="share-btn wa-btn" id="waShare" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+    <a href="https://t.me/share/url?url=" class="share-btn tg-btn" id="tgShare" target="_blank"><i class="fab fa-telegram-plane"></i> Telegram</a>
+    <button class="share-btn cp-btn" onclick="copyURL()"><i class="fas fa-copy"></i> Copy Link</button>
+</div>
+
 <div class="stats-card">
     <div style="font-size: 30px; color: #3b82f6;"><i class="fas fa-history"></i></div>
     <div class="stats-info" style="text-align: right;">
         <p style="margin:0; font-size:12px; color:#64748b; font-weight: bold;">TOTAL ORDERS COMPLETED</p>
-        <h2 id="totalOrdersCount">...</h2>
+        <h2 id="totalOrdersCount">145</h2>
     </div>
 </div>
 
@@ -97,6 +110,16 @@
 
 <script>
     const scriptURL = 'https://script.google.com/macros/s/AKfycbyqdvyG3GVA5PAAFPSVrbi2JOc1vwewJCheoxRvgG7cxaz8A1VEjaTkRKCc4qAh9VnX/exec';
+
+    // Share link setup
+    const currentURL = window.location.href;
+    document.getElementById('waShare').href = `https://api.whatsapp.com/send?text=Get Instant Instagram Services starting at ₹1. Check out MD SUHEL SMM: ${currentURL}`;
+    document.getElementById('tgShare').href = `https://t.me/share/url?url=${currentURL}&text=MD SUHEL SMM PANEL`;
+
+    function copyURL() {
+        navigator.clipboard.writeText(currentURL);
+        alert("Link Copy Ho Gya Bhai! ✅");
+    }
 
     const serviceData = {
         "views": [
@@ -209,9 +232,10 @@
         } catch (e) { alert("Error! WhatsApp support par message karein."); }
     }
 
+    // Counter logic (Starts from 145)
     fetch(scriptURL + "?action=getCount").then(r => r.text()).then(d => {
         let realCount = parseInt(d) || 0;
-        document.getElementById("totalOrdersCount").innerText = realCount + 1845;
+        document.getElementById("totalOrdersCount").innerText = 145 + realCount;
     });
 </script>
 </body>
