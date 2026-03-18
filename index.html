@@ -61,7 +61,7 @@
 <body>
 
 <div class="header-top">
-    <div class="logo-box"><span class="changing-text">MD SUHEL SMM</span></div>
+    <div class="logo-box"><span class="changing-text">SMM by AS</span></div>
 </div>
 
 <div class="offer-wrapper">
@@ -80,7 +80,7 @@
     <div style="font-size: 30px; color: #3b82f6;"><i class="fas fa-check-circle"></i></div>
     <div class="stats-info" style="text-align: right;">
         <p style="margin:0; font-size:11px; color:#64748b; font-weight: bold;">TOTAL ORDERS DELIVERED</p>
-        <h2 id="totalOrdersCount">145</h2>
+        <h2 id="totalOrdersCount">15</h2>
     </div>
 </div>
 
@@ -132,13 +132,13 @@
 
 <div class="info-box notice-box">
     <h4 style="color:#facc15;"><i class="fas fa-exclamation-triangle"></i> Notice ⚠️</h4>
-    <p>Agar aapke order mein koi bhi problem aati hai, toh aapki payment <b>1/2 Ghante</b> mein return ho jayegi. Aap bina tension ke hamari service use karein. <br><br> <b>Thanks 💝 for visiting!</b></p>
+    <p>Agar aapke order mein koi bhi problem aati hai, toh aapki payment <b>1/2 hour </b> mein return ho jayegi. Aap bina tension ke hamari web vist kare . <br><br> <b>Thanks 💝 for visiting!</b></p>
 </div>
 
 <div class="info-box">
     <h4 style="color:var(--gold)"><i class="fas fa-info-circle"></i> Terms & Conditions</h4>
     <p>1. <b>Galat Link:</b> Link check karke dalein, galat link par refund nahi milega.</p>
-    <p>2. <b>Order Time:</b> Order start hone mein 0-24 ghante tak lag sakte hain.</p>
+    <p>2. <b>Order Time:</b> Order start hone mein 1minute ghante tak lag sakte hain.</p>
     <p>3. <b>Drop Policy:</b> No-refill services mein drop hone par refill nahi hota.</p>
 </div>
 
@@ -261,13 +261,13 @@
                     role: isReseller ? "Reseller" : "User"
                 })
             });
-            alert("✅ Order Placed! Suhel Bhai check karke start kar denge.");
+            alert("✅ Order Placed! chekd oaymbet after service olz wait.2 mintue .");
             location.reload();
         } catch (e) { alert("Error!"); }
     }
 
     fetch(scriptURL + "?action=getCount").then(r => r.text()).then(d => {
-        document.getElementById("totalOrdersCount").innerText = 145 + (parseInt(d) || 0);
+        document.getElementById("totalOrdersCount").innerText = 280 + (parseInt(d) || 0);
     });
 </script>
 </body>
