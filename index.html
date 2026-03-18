@@ -50,9 +50,12 @@
         .circle-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white; text-decoration: none; border: 2px solid white; box-shadow: 0 4px 15px rgba(0,0,0,0.4); cursor: pointer; }
         .reseller-btn { background: var(--gold); color: #000; border-color: #000; }
         .whatsapp-btn { background: var(--whatsapp); }
+        .history-btn { background: var(--primary); }
 
-        #reseller-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
+        #reseller-modal, #history-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
         .modal-box { background: var(--card); padding: 25px; border-radius: 15px; width: 85%; max-width: 320px; text-align: center; border: 2px solid var(--gold); }
+        .history-box { border-color: var(--primary); max-height: 70vh; overflow-y: auto; }
+        .history-item { background: #0f172a; padding: 10px; border-radius: 8px; margin-bottom: 10px; text-align: left; border-left: 3px solid var(--primary); font-size: 12px; }
 
         #qr-section { display: none; text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #334155; }
         .qr-img { width: 200px; border: 5px solid white; border-radius: 10px; margin: 10px 0; }
@@ -138,13 +141,22 @@
 <div class="info-box">
     <h4 style="color:var(--gold)"><i class="fas fa-info-circle"></i> Terms & Conditions</h4>
     <p>1. <b>Galat Link:</b> Link check karke dalein, galat link par refund nahi milega.</p>
-    <p>2. <b>Order Time:</b> Order start hone mein 0-24 ghante tak lag sakte hain.</p>
+    <p>2. <b>Order Time:</b> Order start hone mein 0.30 minte  tak lag sakte hain.</p>
     <p>3. <b>Drop Policy:</b> No-refill services mein drop hone par refill nahi hota.</p>
 </div>
 
 <div class="float-btns">
+    <div class="circle-btn history-btn" onclick="openHistory()"><i class="fas fa-history"></i></div>
     <div class="circle-btn reseller-btn" onclick="openResellerModal()"><i class="fas fa-crown"></i></div>
     <a href="https://wa.me/917388720012" class="circle-btn whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+</div>
+
+<div id="history-modal">
+    <div class="modal-box history-box">
+        <h3 style="color:var(--primary)">My Orders</h3>
+        <div id="orderList"></div>
+        <button class="btn-pay" style="background:#64748b; margin-top:10px;" onclick="closeHistory()">Close</button>
+    </div>
 </div>
 
 <div id="reseller-modal">
@@ -168,6 +180,25 @@
     function copyURL() { navigator.clipboard.writeText(currentURL); alert("Link Copied! ✅"); }
     function openResellerModal() { document.getElementById('reseller-modal').style.display = 'flex'; }
     function closeModal() { document.getElementById('reseller-modal').style.display = 'none'; }
+    
+    // History Functions
+    function openHistory() {
+        document.getElementById('history-modal').style.display = 'flex';
+        let orders = JSON.parse(localStorage.getItem('suhelOrders')) || [];
+        let list = document.getElementById('orderList');
+        if(orders.length === 0) {
+            list.innerHTML = "<p style='font-size:12px; color:#94a3b8;'>No orders yet.</p>";
+        } else {
+            list.innerHTML = orders.map(o => `
+                <div class="history-item">
+                    <b style="color:var(--primary)">${o.service}</b><br>
+                    Amt: ₹${o.price} | UTR: ${o.utr}<br>
+                    <small style="color:#64748b;">${o.date}</small>
+                </div>
+            `).join('');
+        }
+    }
+    function closeHistory() { document.getElementById('history-modal').style.display = 'none'; }
 
     const serviceData = {
         "ig_views": [
@@ -252,6 +283,12 @@
         if(utr.length < 12) return alert("Sahi 12-digit UTR daalo!");
         document.getElementById("confirmBtn").innerText = "Processing...";
         const s = JSON.parse(document.getElementById("serviceSelect").value);
+        
+        // Save to History LocalStorage
+        let orders = JSON.parse(localStorage.getItem('suhelOrders')) || [];
+        orders.unshift({ service: s.name, price: s.price, utr: utr, date: new Date().toLocaleString() });
+        localStorage.setItem('suhelOrders', JSON.stringify(orders.slice(0, 15)));
+
         try {
             await fetch(scriptURL, {
                 method: 'POST', mode: 'no-cors',
