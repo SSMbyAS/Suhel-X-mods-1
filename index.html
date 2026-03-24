@@ -196,42 +196,40 @@
         document.getElementById("payBtn").style.display = "none";
     }
 
-    // --- FULL FIXED SUBMISSION LOGIC ---
-    async function submitOrder() {
-        let utr = document.getElementById("utr").value.trim();
-        let targetLink = document.getElementById("targetLink").value.trim();
-        let serviceVal = document.getElementById("serviceSelect").value;
+async function submitOrder() {
+    let utr = document.getElementById("utr").value.trim();
+    let targetLink = document.getElementById("targetLink").value.trim();
+    let serviceVal = document.getElementById("serviceSelect").value;
 
-        if(utr.length < 12) return alert("12-digit UTR sahi se daalo!");
-        
-        const confirmBtn = document.getElementById("confirmBtn");
-        confirmBtn.innerText = "Sending... ⏳";
-        confirmBtn.disabled = true;
+    if(utr.length < 12) return alert("Bhai, 12-digit UTR sahi se daalo!");
+    if(!serviceVal) return alert("Pehle package select karein!");
 
-        const s = JSON.parse(serviceVal);
-        let formData = new FormData();
-        formData.append("date", new Date().toLocaleString());
-        formData.append("link", targetLink);
-        formData.append("service", s.name);
-        formData.append("price", s.price);
-        formData.append("utr", utr);
+    const s = JSON.parse(serviceVal);
+    const confirmBtn = document.getElementById("confirmBtn");
+    confirmBtn.innerText = "Sending Data... ⏳";
+    confirmBtn.disabled = true;
 
-        try {
-            // Google Sheets fetch
-            await fetch(scriptURL, { method: 'POST', body: formData });
-            
-            // Local History save
-            let orders = JSON.parse(localStorage.getItem('suhelOrders')) || [];
-            orders.unshift({ service: s.name, price: s.price, utr: utr, date: new Date().toLocaleString() });
-            localStorage.setItem('suhelOrders', JSON.stringify(orders.slice(0, 10)));
+    // Naya Method: URL Parameters ke sath data bhejna (Sabse best chalta hai)
+    const finalURL = `https://script.google.com/macros/s/AKfycbzcNBM_wOhioW1k3NWbLKiWTSax3Y8H3wgNyRByQhq2YC8uWzUY539QBtvkA9Qvna9C/exec?date=${encodeURIComponent(new Date().toLocaleString())}&link=${encodeURIComponent(targetLink)}&service=${encodeURIComponent(s.name)}&price=${encodeURIComponent(s.price)}&utr=${encodeURIComponent(utr)}`;
 
-            alert("Order Success! ✅ Data Sheet me add ho gaya.");
-            location.reload();
-        } catch (error) {
-            alert("Order Processed! Check Sheets.");
-            location.reload();
-        }
+    try {
+        // GET/POST Request bhejna
+        await fetch(finalURL, { mode: 'no-cors', method: 'POST' });
+
+        // History Save
+        let orders = JSON.parse(localStorage.getItem('suhelOrders')) || [];
+        orders.unshift({ service: s.name, price: s.price, utr: utr, date: new Date().toLocaleString() });
+        localStorage.setItem('suhelOrders', JSON.stringify(orders.slice(0, 10)));
+
+        alert("Order Successful! ✅ Sheets mein check karein.");
+        location.reload();
+    } catch (error) {
+        console.log(error);
+        alert("Done! Check your Sheet.");
+        location.reload();
     }
+}
+    
 
     function openHistory() {
         document.getElementById('history-modal').style.display = 'flex';
