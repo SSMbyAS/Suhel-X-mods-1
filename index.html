@@ -100,6 +100,16 @@
     <select id="categorySelect" onchange="loadServices()">
         <option value="">-- Choose Category --</option>
         <optgroup label="Instagram Services">
+            <label><i class="fas fa-box-open"></i> Select Package</label>
+<select id="serviceSelect" onchange="updatePrice()">
+    <option value="">Select Category First</option>
+</select>
+
+<label><i class="fas fa-sort-amount-up"></i> Enter Quantity (Min: 1000)</label>
+<input type="number" id="customQty" placeholder="Example: 4000" min="1000" oninput="calculateDynamicPrice()">
+
+<div class="price-box" id="priceDisplay">₹0.00</div>
+            
             <option value="ig_views">Instagram Views 🎬</option>
             <option value="ig_likes">Instagram Likes ❤️</option>
             <option value="ig_likes_in">Instagram Likes India 🇮🇳</option>
@@ -289,6 +299,39 @@
     }
 
     function updatePrice() {
+        
+       function calculateDynamicPrice() {
+    let qty = document.getElementById("customQty").value;
+    let priceDisplay = document.getElementById("priceDisplay");
+    let finalAmt = document.getElementById("finalAmt");
+    let qrImg = document.getElementById("qrImg");
+
+    // Agar user ne kuch nahi likha ya 1000 se kam hai
+    if (!qty || qty < 1000) {
+        priceDisplay.innerText = "Min 1000 Required";
+        return;
+    }
+
+    // Aapka Formula: 4000 Views = ₹3
+    // Iska matlab 1 view ka price = 3 / 4000 = 0.00075
+    let rate = 3 / 4000;
+    let totalPrice = qty * rate;
+
+    // Reseller Mode Discount (₹1 off)
+    if (isReseller && totalPrice > 1.5) {
+        totalPrice = totalPrice - 1;
+    }
+
+    // Amount ko sundar dikhane ke liye (2 decimal points)
+    let finalPrice = totalPrice.toFixed(2);
+
+    // Screen par price dikhayein
+    priceDisplay.innerText = "₹" + finalPrice;
+    finalAmt.innerText = finalPrice;
+
+    // QR Code ko automatic naye price ke saath update karein
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=upi://pay?pa=7388720012@fam%26am=${finalPrice}%26cu=INR`;
+       }
         const val = document.getElementById("serviceSelect").value;
         if(val) {
             const s = JSON.parse(val);
